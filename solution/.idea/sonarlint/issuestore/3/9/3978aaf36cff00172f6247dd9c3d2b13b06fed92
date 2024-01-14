@@ -1,7 +1,0 @@
-
-{
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(®½¦ üÿÿÿÿ8Í¡ÀÌĞ1
-G	java:S106-"+Replace this use of System.out by a logger.(Ó„´¥8Ş¡ÀÌĞ1
-L	java:S1066"+Replace this use of System.out by a logger.(×¤™şÿÿÿÿ8ß¡ÀÌĞ1
-G	java:S106@"+Replace this use of System.out by a logger.(Ó„´¥8á¡ÀÌĞ1
-L	java:S106E"+Replace this use of System.out by a logger.(˜ÓİŠÿÿÿÿÿ8†ÕÂÌĞ1
