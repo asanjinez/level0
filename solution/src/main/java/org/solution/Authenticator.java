@@ -1,59 +1,69 @@
 package org.solution;
 
 import org.json.JSONObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
-
+import java.util.Optional;
+import java.util.Scanner;
 
 public class Authenticator {
-    Map<String,String> users;
+    private Map<String, String> users;
+    private String usersRoute = "src\\main\\resources\\users\\users.json";
+
+
+    private JsonParser<String, String> jsonParser;
+
 
     public Authenticator() {
-        this. users = this.loadUsers();
+        this.jsonParser = new JsonParser<>();
+        this.users = this.loadUsers();
     }
 
-    public boolean registerUser(String username, String password){
-        boolean validRegister = false;
-        users.put(username,password);
+    public Optional<String> registerUser(String usernameCred, String passwordCred) {
 
-        try {
-            JSONObject jsonObject = new JSONObject(users);
-            FileWriter fileWriter = new FileWriter("src\\main\\resources\\users\\users.json",false);
-            fileWriter.write(jsonObject.toString());
-            fileWriter.flush();
-            fileWriter.close();
-
-            System.out.println("User successfully  created");
-            validRegister = true;
-
-        } catch (IOException io){
-            users.remove(username);
-            System.out.println("Error creating user");
-            System.out.println(io.getMessage());
+        users.put(usernameCred, passwordCred);
+        if (jsonParser.writeJson(new JSONObject(users), usersRoute)){
+            System.out.println("Registered!");
+            return Optional.of(usernameCred);
         }
-
-        return validRegister;
-
+        users.remove(usernameCred);
+        return Optional.empty();
     }
 
-    public boolean validUser(String username, String password){
-        if (this.users.containsKey(username) && users.get(username).equals(password) ){
+    public Optional<String> validUser(String username, String password) {
+        if (this.users.containsKey(username) && users.get(username).equals(password)) {
             System.out.println("Logged in");
-            return true;
+            return Optional.of(username);
         }
         System.out.println("Invalid username or password");
-        System.out.println("_________________");
-        return false;
+        return Optional.empty();
     }
 
-    public boolean validUsername(String username){
-        if(!users.containsKey(username))
+    public Optional<String> validateLoginAttemps(int attemps) {
+
+        for (int i = attemps - 1; i >= 0; i--) {
+            System.out.println("Please, enter your username and password");
+            System.out.println("Enter Username:");
+            String username = new Scanner(System.in).nextLine();
+
+            System.out.println("Enter Password:");
+            String password = new Scanner(System.in).nextLine();
+
+            Optional<String> user = this.validUser(username, password);
+            if (user.isPresent())
+                return user;
+
+            System.out.println(i + " attemps remaining");
+            System.out.println("_________________");
+
+        }
+        System.out.println("maximum number of attempts, blocked account");
+        System.out.println("_________________");
+        return Optional.empty();
+    }
+
+    public boolean validUsername(String username) {
+        if (!users.containsKey(username))
             return true;
 
         System.out.println("This username alredy exists, try to log in");
@@ -61,33 +71,7 @@ public class Authenticator {
         return false;
     }
 
-
-
-    private static Map<String, String> loadUsers() {
-        Map<String, String> map;
-        try {
-            String users = new String(Files.readAllBytes(Paths.get("src\\main\\resources\\users\\users.json")));
-            JSONObject jsonObject = new JSONObject(users);
-            map = toMap(jsonObject);
-
-            System.out.println(map.size() + " Users loaded");
-            System.out.println("_________________");
-
-        } catch (IOException io){
-            System.out.println("Users File not found");
-            System.out.println(io.getMessage());
-            map = new HashMap<>();
-        }
-
-        return map;
-    }
-
-    // Convert from Json to Map
-    private static Map<String, String> toMap(JSONObject jsonObject) {
-        Map<String, String> map = new HashMap<>();
-        for (String key : jsonObject.keySet()) {
-            map.put(key, jsonObject.getString(key));
-        }
-        return map;
+    private Map<String, String> loadUsers() {
+        return jsonParser.loadJson(usersRoute);
     }
 }
