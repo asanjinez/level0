@@ -1,17 +1,16 @@
 package org.solution;
 
 import org.json.JSONObject;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class Authenticator {
-    private Map<String, String> users;
-    private String usersRoute = "src\\main\\resources\\users\\users.json";
+    private final Map<String, String> users;
+    private static final String usersRoute = "src\\main\\resources\\users\\users.json";
 
 
-    private JsonParser<String, String> jsonParser;
+    private final JsonParser<String, String> jsonParser;
 
 
     public Authenticator() {
@@ -39,7 +38,7 @@ public class Authenticator {
         return Optional.empty();
     }
 
-    public Optional<String> validateLoginAttemps(int attemps) {
+    public Optional<String> validateLoginAttempts(int attemps) {
 
         for (int i = attemps - 1; i >= 0; i--) {
             System.out.println("Please, enter your username and password");

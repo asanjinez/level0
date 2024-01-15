@@ -2,23 +2,25 @@ package org.solution;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 //At this time we have not taken into consideration the race conditions.
 public class Account {
-    private Map<String, BigDecimal> accounts;
-    private String accountsRoute = "src\\main\\resources\\accounts\\accounts.json";
+    private final Map<String, BigDecimal> accounts;
+    private static final String accountsRoute = "src\\main\\resources\\accounts\\accounts.json";
     private final JsonParser<String,BigDecimal> jsonParser;
     public Account() {
-        this.jsonParser = new JsonParser<String,BigDecimal>();
+        this.jsonParser = new JsonParser<>();
         this.accounts = this.loadAccounts();
         this.convertAllAmounts();
 
     }
 
-    public boolean createAccount(String username, BigDecimal intialAmmount){
-        accounts.put(username,intialAmmount);
+    public boolean createAccount(String username, BigDecimal initialAmount){
+        accounts.put(username,initialAmount);
         if(jsonParser.writeJson(new JSONObject(accounts),accountsRoute))
             return true;
 
@@ -30,59 +32,62 @@ public class Account {
      return jsonParser.loadJson(accountsRoute);
 
     }
-
-    private boolean existsAccount(String username){
-        return accounts.containsKey(username);
-    }
     public BigDecimal getBalance(String username){
-        var vars = accounts.get(username);
-        return vars;
+        return accounts.get(username);
 
     }
-//TODO
-//    Actualmente funciona sin embargo cuando sacamos de una cuenta y no es valido deberia cortar toda
-//    la ejecucion, asi como esta, cancela el retiro de la cuenta from pero deposita en la cuenta to, porque no hay
-//    problema en realidad
-    public void deposit(String username ,BigDecimal amount){
-        BigDecimal oldBalance = accounts.get(username);
-        BigDecimal newBalance = oldBalance.add(amount);
-        if(newBalance.signum() < 0){
-            System.out.println("This amount is not valid");
-            return;
+public boolean deposit(String username, BigDecimal amount) {
+    BigDecimal oldBalance = accounts.get(username);
+    BigDecimal newBalance = oldBalance.add(amount);
+    try {
+        if (newBalance.signum() < 0) {
+            throw new IllegalArgumentException("Insufficient funds");
         }
+
         accounts.put(username, newBalance);
-        if(!jsonParser.writeJson(new JSONObject(accounts),accountsRoute)){
-            accounts.put(username, oldBalance.add(amount));
-            return;
-        }
+        if (!jsonParser.writeJson(new JSONObject(accounts), accountsRoute))
+            throw new IOException("Error saving file");
 
-        System.out.println("new Balance: " + newBalance);
+        System.out.println("New Balance: " + newBalance);
+        return true;
+
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+        System.out.println("Transaction failed. Reverting changes.");
+        accounts.put(username, oldBalance);
+        jsonParser.writeJson(new JSONObject(accounts),accountsRoute);
+        return false;
     }
+}
 
-    public void withdraw(String username ,BigDecimal amount){
+    public boolean withdraw(String username ,BigDecimal amount){
         BigDecimal negativeAmount = amount.negate();
-        deposit(username,negativeAmount);
+        return deposit(username,negativeAmount);
     }
 
-    public void transfer(String fromUser, String toUser, BigDecimal amount){
-        if (amount.signum() < 0){
-            System.out.println("This amount is not valid");
-            return;
-        }
+    public boolean transfer(String fromUser, String toUser, BigDecimal amount) {
+        try {
+            if (amount.signum() <= 0 || !withdraw(fromUser, amount)) {
+                throw new IllegalStateException("Transfer failed: Insufficient funds in the sender's account");
+            }
 
-        if (!this.existsAccount(toUser)){
-            System.out.println("This is not valid user");
-            return;
-        }
-//        I am not considering isolation level or atomicity
-        this.withdraw(fromUser,amount);
-        this.deposit(toUser,amount);
+            if (!deposit(toUser, amount)) {
+                deposit(fromUser, amount);
+                throw new IllegalStateException("Transfer failed: Unable to deposit into the receiver's account");
+            }
 
+            System.out.println("Transfer successful: " + amount + " transferred from "
+                    + fromUser + " to " + toUser);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     private void convertAllAmounts() {
         for (Map.Entry<String, BigDecimal> entry : this.accounts.entrySet()) {
-            this.accounts.put(entry.getKey(), this.convertToBigDecimal(entry.getValue()));
+            this.accounts.put(entry.getKey(), convertToBigDecimal(entry.getValue()).setScale(2, RoundingMode.HALF_UP));
         }
     }
 

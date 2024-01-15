@@ -32,7 +32,6 @@ public class JsonParser<T, M> {
             fileWriter.write(jsonObject.toString());
             fileWriter.flush();
 
-//            System.out.println("Written file");
             return true;
         } catch (IOException io) {
             System.out.println("Error writting file");
