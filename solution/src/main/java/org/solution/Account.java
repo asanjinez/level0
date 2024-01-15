@@ -13,6 +13,7 @@ public class Account {
     public Account() {
         this.jsonParser = new JsonParser<String,BigDecimal>();
         this.accounts = this.loadAccounts();
+        this.convertAllAmounts();
 
     }
 
@@ -34,10 +35,14 @@ public class Account {
         return accounts.containsKey(username);
     }
     public BigDecimal getBalance(String username){
-        return accounts.get(username);
+        var vars = accounts.get(username);
+        return vars;
 
     }
-
+//TODO
+//    Actualmente funciona sin embargo cuando sacamos de una cuenta y no es valido deberia cortar toda
+//    la ejecucion, asi como esta, cancela el retiro de la cuenta from pero deposita en la cuenta to, porque no hay
+//    problema en realidad
     public void deposit(String username ,BigDecimal amount){
         BigDecimal oldBalance = accounts.get(username);
         BigDecimal newBalance = oldBalance.add(amount);
@@ -45,13 +50,13 @@ public class Account {
             System.out.println("This amount is not valid");
             return;
         }
-        accounts.put(username, oldBalance.add(newBalance));
+        accounts.put(username, newBalance);
         if(!jsonParser.writeJson(new JSONObject(accounts),accountsRoute)){
             accounts.put(username, oldBalance.add(amount));
             return;
         }
 
-        System.out.println("new Balance: " + oldBalance.add(amount));
+        System.out.println("new Balance: " + newBalance);
     }
 
     public void withdraw(String username ,BigDecimal amount){
@@ -75,4 +80,15 @@ public class Account {
 
     }
 
+    private void convertAllAmounts() {
+        for (Map.Entry<String, BigDecimal> entry : this.accounts.entrySet()) {
+            this.accounts.put(entry.getKey(), this.convertToBigDecimal(entry.getValue()));
+        }
+    }
+
+    private static BigDecimal convertToBigDecimal(Object value) {
+        return new BigDecimal(value.toString());
+    }
+
 }
+
