@@ -1,0 +1,4 @@
+{
+  "accounts": "src\\main\\resources\\accounts\\accounts.json",
+  "users": "src\\main\\resources\\users\\users.json"
+}

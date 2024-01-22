@@ -1,6 +1,8 @@
 //Route: E:\Ideas\programming-skills\level0\solution
 package org.solution;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.solution.converter.JsonConverter;
 import org.solution.manager.AccountManager;
 import org.solution.manager.UserManager;
 
@@ -13,8 +15,8 @@ import static org.solution.Operations.*;
 // For this solution we will not use a database, it is a good alternative, but we will limit ourselves to solve all this as natively as possible, at least for level 0.
 public class Main {
     private static final int ATTEMPTS = 3;
-    public static final String accountsRoute = "src\\main\\resources\\accounts\\accounts.json";
-    private static final String usersRoute = "src\\main\\resources\\users\\users.json";
+    public static final String accountsRoute = loadConfig("accounts");
+    private static final String usersRoute = loadConfig("users");
     private static AccountManager accountManager;
     private static UserManager userManager;
 
@@ -105,5 +107,10 @@ public class Main {
                 System.out.println("?");
                 System.exit(1);
         }
+    }
+    private static String loadConfig(String key) {
+        return new JsonConverter<>(new TypeReference<Map<String,String>>() {}).load("src\\main\\resources\\config.json").get().get(key);
+
+
     }
 }
