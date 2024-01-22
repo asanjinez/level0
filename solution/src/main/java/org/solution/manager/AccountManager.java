@@ -99,7 +99,7 @@ public class AccountManager implements DataManager<Account> {
         }
     }
 
-    private Account findByUsername(String username){
+    public Account findByUsername(String username){
             return accountList.stream()
                     .filter(account -> account.getUsername().equals(username))
                     .findFirst()

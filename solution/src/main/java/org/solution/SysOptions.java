@@ -1,12 +1,13 @@
 package org.solution;
 
-public enum Operations {
-    VIEW,
-    DEPOSIT,
-    WITHDRAW,
-    TRANSFER,
+public enum SysOptions {
+    HOME_BANKING,
+    CURRENCY_CONVERTER,
+    UNVERSITY,
+    SHIPPING,
+    FINANCE_MANAGMENT,
     EXIT;
-    public static Operations fromIndex(int index) {
+    public static SysOptions fromIndex(int index) {
         if (index >= 0 && index < values().length) {
             return values()[index];
         } else {
