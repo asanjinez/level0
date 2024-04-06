@@ -1,8 +1,8 @@
-package org.solution;
+package org.solution.enums;
 
 import java.math.BigDecimal;
 
-public enum CCOptions {
+public enum CCOptions{
     ARS(BigDecimal.valueOf(1000.00)),   //1 USD = 43.47 ARS
     CLP(BigDecimal.valueOf(909.64)),  //1 USD = 750.65 CLP
     USD(BigDecimal.valueOf(1.0)),     //1 USD = 1 USD
@@ -18,10 +18,9 @@ public enum CCOptions {
             this.exchangeRate = exchangeRate;
         }
 
-        public BigDecimal getExchangeRateFromUSD() {
+    public BigDecimal getExchangeRateFromUSD() {
             return exchangeRate;
         }
-
 
     public static CCOptions fromIndex(int index) {
         if (index >= 0 && index < values().length) {
@@ -37,4 +36,10 @@ public enum CCOptions {
             throw new IllegalArgumentException("Invalid currency code: " + string);
         }
     }
+    public static void showValues() {
+        for (int i = 0; i < values().length; i++) {
+            System.out.println(i + ") " + values()[i]);
+        }
+    }
+
 }

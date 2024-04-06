@@ -1,0 +1,191 @@
+{
+  "programs":[
+    {
+      "title":"COMPUTER_SCIENCE",
+      "maxStudents":5,
+      "cities":[
+        {
+          "name":"LONDON",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+              "1"
+            ]
+          },
+          "allStudents":[
+            "1"
+          ]
+        },
+        {
+          "name":"MANCHESTER",
+          "seats":{
+            "maxStudents":3,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"LIVERPOOL",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        }
+      ],
+      "allProgramStudents":[
+        "1"
+      ],
+      "totalSTudents":1
+    },
+    {
+      "title":"MEDICINE",
+      "maxStudents":5,
+      "cities":[
+        {
+          "name":"LONDON",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"MANCHESTER",
+          "seats":{
+            "maxStudents":3,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"LIVERPOOL",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        }
+      ],
+      "allProgramStudents":[
+
+      ],
+      "totalSTudents":0
+    },
+    {
+      "title":"MARKETING",
+      "maxStudents":5,
+      "cities":[
+        {
+          "name":"LONDON",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"MANCHESTER",
+          "seats":{
+            "maxStudents":3,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"LIVERPOOL",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        }
+      ],
+      "allProgramStudents":[
+
+      ],
+      "totalSTudents":0
+    },
+    {
+      "title":"ARTS",
+      "maxStudents":5,
+      "cities":[
+        {
+          "name":"LONDON",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"MANCHESTER",
+          "seats":{
+            "maxStudents":3,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        },
+        {
+          "name":"LIVERPOOL",
+          "seats":{
+            "maxStudents":1,
+            "students":[
+
+            ]
+          },
+          "allStudents":[
+
+          ]
+        }
+      ],
+      "allProgramStudents":[
+
+      ],
+      "totalSTudents":0
+    }
+  ],
+  "allStudents":[
+    "1"
+  ]
+}

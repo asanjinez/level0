@@ -1,4 +1,4 @@
-package org.solution.converter;
+package org.solution.dataConverter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-public class JsonConverter<T> implements Converter<T> {
+public class DataJsonConverter<T> implements DataConverter<T> {
     private final TypeReference<T> typeReference;
 
-    public JsonConverter(TypeReference<T> typeReference) {
+    public DataJsonConverter(TypeReference<T> typeReference) {
         this.typeReference = typeReference;
     }
 

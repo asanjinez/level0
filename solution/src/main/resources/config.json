@@ -1,4 +1,5 @@
 {
   "accounts": "src\\main\\resources\\accounts\\accounts.json",
-  "users": "src\\main\\resources\\users\\users.json"
+  "users": "src\\main\\resources\\users\\users.json",
+  "university": "src\\main\\resources\\university\\university.json"
 }

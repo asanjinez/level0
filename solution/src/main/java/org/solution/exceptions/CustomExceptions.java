@@ -25,4 +25,19 @@ public class CustomExceptions {
             super(message, cause);
         }
     }
+    public static class ProgramNotAvailableException extends RuntimeException {
+        public ProgramNotAvailableException(String message) {
+            super(message);
+        }
+    }
+    public static class CityNotAvailableException extends RuntimeException {
+        public CityNotAvailableException(String message) {
+            super(message);
+        }
+    }
+    public static class InexistentProgram extends RuntimeException {
+        public InexistentProgram(String message) {
+            super(message);
+        }
+    }
 }

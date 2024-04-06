@@ -2,7 +2,7 @@ package org.solution.manager;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.solution.models.Account;
-import org.solution.converter.JsonConverter;
+import org.solution.dataConverter.DataJsonConverter;
 import org.solution.exceptions.CustomExceptions.*;
 
 import java.math.BigDecimal;
@@ -11,12 +11,13 @@ import java.util.List;
 
 public class AccountManager implements DataManager<Account> {
     private final String route;
-    private final JsonConverter<List<Account>> jsonConverter;
+    private final DataJsonConverter<List<Account>> jsonConverter;
     private final List<Account> accountList;
 
     public AccountManager(String route){
+
         this.route = route;
-        this.jsonConverter = new JsonConverter<>(new TypeReference<List<Account>>() {});
+        this.jsonConverter = new DataJsonConverter<>(new TypeReference<List<Account>>() {});
         this.accountList = this.load();
     }
 

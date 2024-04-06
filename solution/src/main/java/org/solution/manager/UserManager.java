@@ -3,7 +3,7 @@ package org.solution.manager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.solution.exceptions.CustomExceptions;
 import org.solution.models.Account;
-import org.solution.converter.JsonConverter;
+import org.solution.dataConverter.DataJsonConverter;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -18,20 +18,20 @@ public class UserManager implements DataManager<Map.Entry<String, String>>{
     private AccountManager accountManager;
 
     private String route;
-    private JsonConverter<Map<String,String>> jsonConverter;
+    private DataJsonConverter<Map<String,String>> jsonConverter;
     private Map<String,String> users;
 
     public UserManager(String route){
         this.route = route;
         this.accountManager = new AccountManager(accountsRoute);
-        this.jsonConverter = new JsonConverter<>(new TypeReference<Map<String,String>>() {});
+        this.jsonConverter = new DataJsonConverter<>(new TypeReference<Map<String,String>>() {});
         this.users = this.load();
     }
 
     public UserManager(String route,AccountManager accountManager){
         this.route = route;
         this.accountManager = accountManager;
-        this.jsonConverter =  new JsonConverter<>(new TypeReference<Map<String,String>>() {});
+        this.jsonConverter =  new DataJsonConverter<>(new TypeReference<Map<String,String>>() {});
         this.users = this.load();
     }
     @Override
@@ -63,9 +63,6 @@ public class UserManager implements DataManager<Map.Entry<String, String>>{
         }
 
     }
-
-
-
     public Optional<String> validUser(String username, String password) {
         if (this.users.containsKey(username) && users.get(username).equals(password)) {
             System.out.println("Logged in");

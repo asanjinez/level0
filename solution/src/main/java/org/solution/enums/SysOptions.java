@@ -1,4 +1,4 @@
-package org.solution;
+package org.solution.enums;
 
 public enum SysOptions {
     HOME_BANKING,
@@ -12,6 +12,11 @@ public enum SysOptions {
             return values()[index];
         } else {
             throw new IllegalArgumentException("There is no operation with index: " + index);
+        }
+    }
+    public static void showValues() {
+        for (int i = 0; i < values().length; i++) {
+            System.out.println(i + ") " + values()[i]);
         }
     }
 }
